@@ -1,0 +1,35 @@
+import re
+
+# Словарь с цифрами
+dc_cifr = {'0': 'ноль', '1': 'один', '2': 'два', '3': 'три', '4': 'четыре', '5': 'пять', '6': 'шесть', '7': 'семь', '8': 'восемь', '9': 'девять'}
+
+# Выбор файла
+file_name = "text.txt"
+
+# Ввод числа K
+k = int(input("Число К = "))
+k0 = False  # Встретилось ли число, состоящее из нулей
+
+# Чтение файла
+with open(file_name, 'r') as file:
+    f = file.readlines()
+    for gived_num in f:
+        gived_num = gived_num.strip()  # Удаление лишних пробелов и переносов строк
+
+        # Проверка на число из K нулей
+        if re.search(r'0{' + str(k) + r'}', gived_num):
+            k0 = True
+
+        # Проверка на натуральное число и четность
+        if re.match("^[0-9]+$", gived_num) and int(gived_num[-1]) % 2 == 0:
+            if k0:
+                # Вывод числа прописью
+                print(' '.join(dc_cifr[digit] for digit in gived_num))
+            else:
+                # Меняем местами каждые две соседние цифры
+                swapped_num = ''
+                for i in range(0, len(gived_num) - 1, 2):
+                    swapped_num += gived_num[i + 1] + gived_num[i]
+                if len(gived_num) % 2 != 0:
+                    swapped_num += gived_num[-1]
+                print(swapped_num)
